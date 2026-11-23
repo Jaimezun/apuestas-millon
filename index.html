@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Millón — ¿quién termina con más?</title>
+<meta name="description" content="Todos empiezan con $1,000,000 de mentira. Moneda, caballos o copas: gana quien termine con más.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data:; connect-src https://lcjwmsdvzrkjtjbsdbfl.supabase.co wss://lcjwmsdvzrkjtjbsdbfl.supabase.co; base-uri 'none'; object-src 'none'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23e7c15a'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%230b2a20' stroke-width='3'/%3E%3Ctext x='32' y='43' font-size='30' font-family='Georgia,serif' font-weight='700' text-anchor='middle' fill='%230b2a20'%3E$%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="estilos.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js" integrity="sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok" crossorigin="anonymous"></script>
+<script src="config.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="marca">
+    <span class="marca-ficha" aria-hidden="true">$</span>
+    <div>
+      <h1>El Millón</h1>
+      <p>Todos empiezan con $1,000,000. Gana quien termine con más.</p>
+    </div>
+  </div>
+  <div class="yo" id="yo" hidden>
+    <div class="yo-datos">
+      <span class="yo-nombre" id="yo-nombre"></span>
+      <span class="yo-lugar" id="yo-lugar"></span>
+    </div>
+    <div class="yo-dinero">
+      <span class="yo-saldo" id="yo-saldo"></span>
+      <span class="yo-neto" id="yo-neto"></span>
+    </div>
+    <button type="button" class="boton-liso" id="salir">Salir</button>
+  </div>
+  <button type="button" class="boton" id="entrar" hidden>Entrar a jugar</button>
+</header>
+
+<main class="tablero">
+
+  <section class="juegos" aria-label="Juegos">
+    <div class="pestanas" role="tablist" aria-label="Elige un juego">
+      <button type="button" role="tab" class="pestana" id="tab-moneda" data-juego="moneda" aria-selected="true" aria-controls="panel-moneda">
+        <span class="pestana-nombre">Moneda</span>
+        <span class="pestana-paga">ganas +0.9×</span>
+      </button>
+      <button type="button" role="tab" class="pestana" id="tab-caballos" data-juego="caballos" aria-selected="false" aria-controls="panel-caballos">
+        <span class="pestana-nombre">Caballos</span>
+        <span class="pestana-paga">ganas +2.7×</span>
+      </button>
+      <button type="button" role="tab" class="pestana" id="tab-copas" data-juego="copas" aria-selected="false" aria-controls="panel-copas">
+        <span class="pestana-nombre">Copas</span>
+        <span class="pestana-paga">ganas +1.8×</span>
+      </button>
+    </div>
+
+    <div class="apuesta">
+      <label for="monto">Tu apuesta</label>
+      <div class="apuesta-campo">
+        <span aria-hidden="true">$</span>
+        <input id="monto" type="text" inputmode="decimal" autocomplete="off" value="10,000" aria-describedby="apuesta-nota">
+      </div>
+      <div class="apuesta-rapidas" aria-label="Montos rápidos">
+        <button type="button" class="ficha" data-monto="10000">10 mil</button>
+        <button type="button" class="ficha" data-monto="100000">100 mil</button>
+        <button type="button" class="ficha" data-monto="mitad">Mitad</button>
+        <button type="button" class="ficha" data-monto="todo">Todo</button>
+      </div>
+      <p class="apuesta-nota" id="apuesta-nota"></p>
+    </div>
+
+    <!-- Moneda -->
+    <div class="panel" id="panel-moneda" role="tabpanel" aria-labelledby="tab-moneda">
+      <p class="regla">Águila o sol. Si aciertas, conservas tu apuesta y ganas 0.9 veces más; si no, la pierdes.</p>
+      <div class="escena escena-moneda">
+        <div class="moneda-vuelo" id="moneda-vuelo">
+          <div class="moneda" id="moneda">
+            <div class="cara cara-aguila"><span class="cara-dibujo" aria-hidden="true">🦅</span><span class="cara-texto">ÁGUILA</span></div>
+            <div class="cara cara-sol"><span class="cara-dibujo" aria-hidden="true">☀️</span><span class="cara-texto">SOL</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="opciones" role="radiogroup" aria-label="¿Águila o sol?">
+        <button type="button" class="opcion" role="radio" aria-checked="true" data-eleccion="0">🦅 Águila</button>
+        <button type="button" class="opcion" role="radio" aria-checked="false" data-eleccion="1">☀️ Sol</button>
+      </div>
+      <button type="button" class="boton boton-jugar" id="jugar-moneda">Lanzar la moneda</button>
+    </div>
+
+    <!-- Caballos -->
+    <div class="panel" id="panel-caballos" role="tabpanel" aria-labelledby="tab-caballos" hidden>
+      <p class="regla">Cuatro caballos, un ganador. Si es el tuyo, conservas tu apuesta y ganas 2.7 veces más; si no, la pierdes.</p>
+      <div class="escena escena-caballos" id="pista">
+        <div class="carril" data-caballo="0"><span class="carril-num">1</span><span class="caballo" aria-hidden="true">🏇</span></div>
+        <div class="carril" data-caballo="1"><span class="carril-num">2</span><span class="caballo" aria-hidden="true">🏇</span></div>
+        <div class="carril" data-caballo="2"><span class="carril-num">3</span><span class="caballo" aria-hidden="true">🏇</span></div>
+        <div class="carril" data-caballo="3"><span class="carril-num">4</span><span class="caballo" aria-hidden="true">🏇</span></div>
+        <div class="meta" aria-hidden="true"></div>
+      </div>
+      <div class="opciones opciones-4" role="radiogroup" aria-label="¿Qué caballo gana?">
+        <button type="button" class="opcion c0" role="radio" aria-checked="true" data-eleccion="0">1 · Relámpago</button>
+        <button type="button" class="opcion c1" role="radio" aria-checked="false" data-eleccion="1">2 · Tormenta</button>
+        <button type="button" class="opcion c2" role="radio" aria-checked="false" data-eleccion="2">3 · Canelo</button>
+        <button type="button" class="opcion c3" role="radio" aria-checked="false" data-eleccion="3">4 · Lucero</button>
+      </div>
+      <button type="button" class="boton boton-jugar" id="jugar-caballos">Arrancar la carrera</button>
+    </div>
+
+    <!-- Copas -->
+    <div class="panel" id="panel-copas" role="tabpanel" aria-labelledby="tab-copas" hidden>
+      <p class="regla">La piedrita entra en una copa y se revuelven. Si la encuentras, conservas tu apuesta y ganas 1.8 veces más; si no, la pierdes.</p>
+      <div class="escena escena-copas" id="mesa">
+        <span class="piedra" id="piedra" aria-hidden="true"></span>
+        <button type="button" class="copa" data-copa="0" aria-label="Copa izquierda" disabled></button>
+        <button type="button" class="copa" data-copa="1" aria-label="Copa de en medio" disabled></button>
+        <button type="button" class="copa" data-copa="2" aria-label="Copa derecha" disabled></button>
+      </div>
+      <p class="copas-aviso" id="copas-aviso">Revuelve las copas y luego toca la que creas que tiene la piedrita.</p>
+      <button type="button" class="boton boton-jugar" id="jugar-copas">Revolver las copas</button>
+    </div>
+
+    <p class="resultado" id="resultado" role="status" aria-live="polite"></p>
+
+    <div class="recientes">
+      <h2>Últimas jugadas</h2>
+      <ul id="recientes"></ul>
+    </div>
+  </section>
+
+  <aside class="lateral">
+    <section class="tarjeta casa" aria-labelledby="casa-titulo">
+      <h2 id="casa-titulo">La casa</h2>
+      <div class="casa-cifras">
+        <div class="cifra cifra-grande">
+          <span class="cifra-rotulo">Ganancia neta de la casa</span>
+          <span class="cifra-valor" id="casa-neta">—</span>
+        </div>
+        <div class="cifra">
+          <span class="cifra-rotulo">Jugadores en conjunto</span>
+          <span class="cifra-valor" id="jugadores-neto">—</span>
+        </div>
+        <div class="cifra">
+          <span class="cifra-rotulo">Total apostado</span>
+          <span class="cifra-valor" id="casa-apostado">—</span>
+        </div>
+      </div>
+      <table class="casa-juegos">
+        <thead><tr><th scope="col">Juego</th><th scope="col">Apuestas</th><th scope="col">Gana la casa</th></tr></thead>
+        <tbody id="casa-juegos"></tbody>
+      </table>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="tabla-titulo">
+      <div class="tabla-cabeza">
+        <h2 id="tabla-titulo">Tabla de posiciones</h2>
+        <span class="vivo" id="vivo" title="Estado de la conexión en tiempo real">conectando…</span>
+      </div>
+      <ol class="posiciones" id="posiciones"></ol>
+      <p class="vacio" id="posiciones-vacio" hidden>Todavía no hay jugadores. Sé el primero.</p>
+    </section>
+  </aside>
+</main>
+
+<footer class="pie">
+  Dinero de mentira, solo por diversión. Cada resultado lo sortea el servidor al azar; ni la página ni tu elección lo cambian.
+</footer>
+
+<dialog class="alta" id="alta">
+  <form id="alta-forma" method="dialog">
+    <h2>¿Cómo te llamas?</h2>
+    <p>Empiezas con <strong>$1,000,000</strong>. Tu jugador queda guardado en este navegador.</p>
+    <label for="alta-nombre">Nombre</label>
+    <input id="alta-nombre" type="text" maxlength="20" minlength="2" autocomplete="nickname" required>
+    <p class="alta-error" id="alta-error" role="alert"></p>
+    <div class="alta-botones">
+      <button type="button" class="boton-liso" id="alta-mirar">Solo mirar</button>
+      <button type="submit" class="boton" id="alta-crear">Empezar con $1,000,000</button>
+    </div>
+  </form>
+</dialog>
+
+</body>
+</html>

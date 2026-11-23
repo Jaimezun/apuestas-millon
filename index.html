@@ -148,6 +148,7 @@
         <thead><tr><th scope="col">Juego</th><th scope="col">Apuestas</th><th scope="col">Gana la casa</th></tr></thead>
         <tbody id="casa-juegos"></tbody>
       </table>
+      <a class="casa-porque" href="#matematicas">¿Por qué gana la casa? Ver la matemática ↓</a>
     </section>
 
     <section class="tarjeta" aria-labelledby="tabla-titulo">
@@ -160,6 +161,75 @@
     </section>
   </aside>
 </main>
+
+<section class="mates" id="matematicas" aria-labelledby="mates-titulo">
+  <h2 id="mates-titulo">La matemática: por qué gana la casa</h2>
+  <p class="mates-entrada">Ningún juego está arreglado: cada opción sale con exactamente la misma probabilidad. La casa gana por otra razón: cuando aciertas, te paga un poco menos de lo que sería justo.</p>
+
+  <div class="mates-bloque">
+    <h3>El pago justo y el pago real</h3>
+    <p>Un pago es justo cuando, en promedio, nadie gana ni pierde. En la moneda aciertas 1 de cada 2 veces, así que lo justo sería ganar 1 vez tu apuesta; aquí ganas 0.9. En los tres juegos pasa lo mismo: la casa paga el 90% del premio justo y se queda con la diferencia.</p>
+    <table class="mates-tabla">
+      <thead>
+        <tr><th scope="col">Juego</th><th scope="col">Aciertas</th><th scope="col">Pago justo</th><th scope="col">Paga</th><th scope="col">Ventaja de la casa</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Moneda</th><td>1 de 2</td><td>+1×</td><td>+0.9×</td><td class="mates-ventaja">5%</td></tr>
+        <tr><th scope="row">Caballos</th><td>1 de 4</td><td>+3×</td><td>+2.7×</td><td class="mates-ventaja">7.5%</td></tr>
+        <tr><th scope="row">Copas</th><td>1 de 3</td><td>+2×</td><td>+1.8×</td><td class="mates-ventaja">6.67%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mates-bloque">
+    <h3>La cuenta, con una apuesta de $100</h3>
+    <div class="mates-cuentas">
+      <div class="mates-cuenta">
+        <h4>Moneda</h4>
+        <p>La mitad de las veces ganas $90; la otra mitad pierdes $100.</p>
+        <p class="mates-formula">½ × $90 − ½ × $100 = <b>−$5</b></p>
+      </div>
+      <div class="mates-cuenta">
+        <h4>Caballos</h4>
+        <p>1 de cada 4 veces ganas $270; las otras 3 pierdes $100.</p>
+        <p class="mates-formula">¼ × $270 − ¾ × $100 = <b>−$7.50</b></p>
+      </div>
+      <div class="mates-cuenta">
+        <h4>Copas</h4>
+        <p>1 de cada 3 veces ganas $180; las otras 2 pierdes $100.</p>
+        <p class="mates-formula">⅓ × $180 − ⅔ × $100 = <b>−$6.67</b></p>
+      </div>
+    </div>
+    <p>Ese promedio es la ventaja de la casa: lo que se queda, a la larga, de cada $100 que se apuestan.</p>
+  </div>
+
+  <div class="mates-bloque">
+    <h3>A la corta manda la suerte; a la larga, el promedio</h3>
+    <p>Una sola apuesta la puede ganar cualquiera. Pero cada apuesta trae el mismo promedio en contra, y mientras más se juega, más se parece el resultado a ese promedio (es la ley de los grandes números). Con apuestas iguales a la moneda, la probabilidad de ir ganando es:</p>
+    <div class="mates-rachas">
+      <div class="mates-racha"><span class="mates-racha-valor">38%</span><span class="mates-racha-rotulo">después de 10 apuestas</span></div>
+      <div class="mates-racha"><span class="mates-racha-valor">31%</span><span class="mates-racha-rotulo">después de 100 apuestas</span></div>
+      <div class="mates-racha"><span class="mates-racha-valor">5%</span><span class="mates-racha-rotulo">después de 1,000 apuestas</span></div>
+    </div>
+    <p>No hay sistema que lo arregle. Doblar después de perder, cambiar de juego o seguir «el caballo que viene ganando» no mueve el promedio, porque cada sorteo es independiente del anterior. Lo que se pierde en promedio siempre es la ventaja de la casa multiplicada por todo lo que se apostó.</p>
+  </div>
+
+  <div class="mates-bloque">
+    <h3>Lo esperado contra lo real, en este momento</h3>
+    <p>Con lo que se ha apostado aquí, esto es lo que la casa debería llevar ganado y lo que lleva de verdad. Con pocas apuestas la diferencia es pura suerte; con muchas, el porcentaje real se acerca a la ventaja de cada juego.</p>
+    <table class="mates-tabla">
+      <thead>
+        <tr><th scope="col">Juego</th><th scope="col">Apostado</th><th scope="col">Esperado</th><th scope="col">Real</th></tr>
+      </thead>
+      <tbody id="mates-real"></tbody>
+    </table>
+  </div>
+
+  <div class="mates-bloque">
+    <h3>Entonces, ¿cómo se gana la tabla?</h3>
+    <p>Con suerte. En promedio todos pierden, pero no todos pierden lo mismo: entre más dinero pasas por las apuestas, más te cobra la casa. Quien termine arriba no habrá encontrado un truco; habrá tenido la racha a su favor.</p>
+  </div>
+</section>
 
 <footer class="pie">
   Dinero de mentira, solo por diversión. Cada resultado lo sortea el servidor al azar; ni la página ni tu elección lo cambian.

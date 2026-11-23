@@ -5,10 +5,13 @@
 
   const INICIAL = 1000000;
   const JUEGOS = {
-    moneda: { nombre: 'Moneda', factor: 0.9 },
-    caballos: { nombre: 'Caballos', factor: 2.7 },
-    copas: { nombre: 'Copas', factor: 1.8 },
+    moneda: { nombre: 'Moneda', factor: 0.9, opciones: 2 },
+    caballos: { nombre: 'Caballos', factor: 2.7, opciones: 4 },
+    copas: { nombre: 'Copas', factor: 1.8, opciones: 3 },
   };
+  // Lo que la casa se queda en promedio de cada peso apostado: 1 menos lo
+  // que regresa (apuesta + premio) por la probabilidad de acertar.
+  const ventaja = (juego) => 1 - (1 + JUEGOS[juego].factor) / JUEGOS[juego].opciones;
   const CABALLOS = ['Relámpago', 'Tormenta', 'Canelo', 'Lucero'];
   const LUGAR_COPA = ['la copa izquierda', 'la copa de en medio', 'la copa derecha'];
   const ROTULO_COPA = ['Copa izquierda', 'Copa de en medio', 'Copa derecha'];
@@ -238,6 +241,35 @@
     $('jugadores-neto').textContent = conSigno(-neta);
     $('jugadores-neto').className = 'cifra-valor ' + claseSigno(-neta);
     $('casa-apostado').textContent = dinero(apostado);
+    pintarEsperado();
+  }
+
+  // La sección de matemática: lo que la casa debería llevar contra lo que lleva.
+  function pintarEsperado() {
+    const porciento = (parte, total) => (total > 0
+      ? ` (${parte < 0 ? '−' : ''}${Math.abs(100 * parte / total).toFixed(1)}%)` : '');
+    let apostado = 0;
+    let esperado = 0;
+    let real = 0;
+    const fila = (nombre, a, e, r, clase) => {
+      const tr = crear('tr', clase);
+      tr.append(crear('th', '', nombre));
+      tr.lastChild.scope = 'row';
+      tr.append(crear('td', '', dinero(a)));
+      tr.append(crear('td', '', conSigno(e) + porciento(e, a)));
+      tr.append(crear('td', claseSigno(r), conSigno(r) + porciento(r, a)));
+      return tr;
+    };
+    const filas = Object.keys(JUEGOS).map((juego) => {
+      const c = casa.get(juego) || { apostado: 0, ganancia_casa: 0 };
+      const e = centavos(c.apostado * ventaja(juego));
+      apostado += c.apostado;
+      esperado += e;
+      real += c.ganancia_casa;
+      return fila(JUEGOS[juego].nombre, c.apostado, e, c.ganancia_casa, '');
+    });
+    filas.push(fila('Total', apostado, esperado, real, 'mates-total'));
+    $('mates-real').replaceChildren(...filas);
   }
 
   function pintarRecientes() {

@@ -484,6 +484,56 @@ button:disabled { cursor: default; }
 .fila.quebrado .nombre, .fila.quebrado .saldo { color: var(--tenue); }
 .vacio { margin-top: 10px; color: var(--tenue); }
 
+/* ── La matemática ────────────────────────────────────────────────────── */
+
+.casa-porque { display: inline-block; margin-top: 12px; font-size: .88rem; color: var(--oro-claro); text-underline-offset: 3px; }
+.casa-porque:hover { color: var(--crema); }
+
+.mates {
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: 0 16px;
+  scroll-margin-top: 16px;
+}
+.mates > h2 { font-size: clamp(1.35rem, 3.4vw, 1.75rem); }
+.mates-entrada { max-width: 68ch; margin-top: 8px; font-size: 1.05rem; }
+.mates-bloque {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--linea);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(21, 66, 50, .75), rgba(15, 50, 38, .85));
+}
+.mates-bloque h3 { margin: 0 0 6px; font-family: var(--titulos); font-size: 1.12rem; color: var(--oro-claro); }
+.mates-bloque > p { max-width: 74ch; color: var(--crema); }
+.mates-bloque > p + p, .mates-bloque > div + p { margin-top: 12px; }
+
+.mates-tabla { width: 100%; max-width: 720px; margin-top: 12px; border-collapse: collapse; font-size: .92rem; font-variant-numeric: tabular-nums; }
+.mates-tabla th, .mates-tabla td { padding: 8px 4px; text-align: right; }
+.mates-tabla thead th { font-size: .78rem; font-weight: 500; color: var(--tenue); vertical-align: bottom; }
+.mates-tabla tbody th, .mates-tabla tbody td { border-top: 1px solid var(--linea-suave); }
+.mates-tabla th:first-child { text-align: left; font-weight: 600; }
+.mates-ventaja { font-weight: 700; color: var(--oro-claro); }
+.mates-total th, .mates-total td { font-weight: 700; border-top-color: var(--linea) !important; }
+
+.mates-cuentas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 10px; }
+.mates-cuenta { padding: 12px; border-radius: 12px; background: rgba(10, 37, 28, .55); }
+.mates-cuenta h4 { margin: 0 0 4px; font-family: var(--titulos); font-size: 1rem; }
+.mates-cuenta p { font-size: .9rem; color: var(--tenue); }
+.mates-cuenta .mates-formula {
+  margin-top: 10px;
+  font-family: var(--titulos);
+  font-size: 1.05rem;
+  color: var(--crema);
+  font-variant-numeric: tabular-nums;
+}
+.mates-formula b { color: var(--pierde); white-space: nowrap; }
+
+.mates-rachas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 720px; margin-top: 12px; }
+.mates-racha { display: flex; flex-direction: column; padding: 12px; border-radius: 12px; background: rgba(10, 37, 28, .55); }
+.mates-racha-valor { font-family: var(--titulos); font-size: 1.9rem; font-weight: 700; line-height: 1.1; color: var(--oro-claro); font-variant-numeric: tabular-nums; }
+.mates-racha-rotulo { font-size: .82rem; color: var(--tenue); }
+
 /* ── Pie y alta ───────────────────────────────────────────────────────── */
 
 .pie { max-width: 1180px; margin: 0 auto; padding: 0 16px 32px; font-size: .82rem; color: var(--tenue); text-align: center; }
@@ -530,6 +580,13 @@ button:disabled { cursor: default; }
   .opciones-4 { grid-template-columns: repeat(2, 1fr); }
   .copa { width: 78px; height: 92px; }
   .pestana-paga { font-size: .7rem; }
+  .mates-bloque { padding: 12px; border-radius: 14px; }
+  .mates-cuentas { grid-template-columns: minmax(0, 1fr); }
+  .mates-rachas { gap: 8px; }
+  .mates-racha { padding: 10px 8px; }
+  .mates-racha-valor { font-size: 1.5rem; }
+  .mates-tabla { font-size: .8rem; }
+  .mates-tabla thead th { font-size: .7rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
